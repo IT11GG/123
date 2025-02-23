@@ -1,0 +1,45 @@
+package com.example.shopplugin;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class ShopPlugin extends JavaPlugin {
+
+    @Override
+    public void onEnable() {
+        this.getCommand("shop").setExecutor(new ShopCommand());
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+    }
+
+    public class ShopCommand implements CommandExecutor {
+        @Override
+        public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("This command can only be used by players.");
+                return true;
+            }
+
+            Player player = (Player) sender;
+            Inventory shop = Bukkit.createInventory(null, 27, "Shop");
+
+            // Add items to the shop inventory
+            shop.setItem(0, new ItemStack(Material.DIAMOND, 1));
+            shop.setItem(1, new ItemStack(Material.GOLD_INGOT, 1));
+            shop.setItem(2, new ItemStack(Material.IRON_INGOT, 1));
+
+            player.openInventory(shop);
+            return true;
+        }
+    }
+}
